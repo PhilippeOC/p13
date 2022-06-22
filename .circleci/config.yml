@@ -21,6 +21,6 @@ workflows:
     jobs:
       - test-and-lint
           filters:
-              branches:
-                ignore:
-                  - main
+            branches:
+              ignore:
+                - main

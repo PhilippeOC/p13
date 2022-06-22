@@ -19,7 +19,7 @@ jobs:
 workflows:
   test-and-lint-workflow:
     jobs:
-      - test-and-lint
+      - test-and-lint:
           filters:
             branches:
               ignore:

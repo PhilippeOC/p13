@@ -11,3 +11,15 @@ services:
     container_name: p13_container
     # command: python manage.py runserver 0.0.0.0:8000
     command: gunicorn p13.wsgi:application --bind 0.0.0.0:$PORT
+
+  
+  # sentry:
+  #   image: sentry
+  #   container_name: sentry
+  #   restart: always
+  #   ports:
+  #    - "9000:9000"
+    # environment:
+      # SENTRY_SECRET_KEY: '3f9065305b5142aa8ee24a5cb055e16f44531e6903b54e22a58a0c734a697bf7'
+      # SENTRY_DB_USER: ''
+      # SENTRY_DB_PASSWORD: ''

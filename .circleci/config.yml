@@ -16,19 +16,37 @@ jobs:
           name: run tests
           command: pytest
 
+  build-and-push-to-dockerhub:
+    docker:
+      - image: cimg/go:1.17
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: true
+
+      - run: |
+          TAG=0.1.$CIRCLE_BUILD_NUM
+          docker build -t philpjsdev/oc_p13:$TAG .
+          echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
+          docker push philpjsdev/oc_p13:$TAG
+
 orbs:
   heroku: circleci/heroku@1.2.6
 
 
 
 workflows:
-  test-and-lint-workflow:
+  build-and-test-workflow:
     jobs:
-      - test-and-lint:
-          filters:
-            branches:
-              ignore:
-                - main
+      - test-and-lint
+          # filters:
+          #   branches:
+          #     ignore:
+          #       - main
+      - build-and-push-to-dockerhub:
+          requires:
+            - test-and-lint
   
   heroku_deploy:
     jobs:
@@ -37,3 +55,4 @@ workflows:
             branches:
               only:
                 - main
+

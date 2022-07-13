@@ -45,6 +45,10 @@ workflows:
           #     ignore:
           #       - main
       - build-and-push-to-dockerhub:
+          filters:
+            branches:
+              only:
+                - main
           requires:
             - test-and-lint
   

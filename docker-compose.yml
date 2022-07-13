@@ -20,6 +20,6 @@ services:
   #   ports:
   #    - "9000:9000"
     # environment:
-      # SENTRY_SECRET_KEY: '3f9065305b5142aa8ee24a5cb055e16f44531e6903b54e22a58a0c734a697bf7'
+      # SENTRY_SECRET_KEY: 
       # SENTRY_DB_USER: ''
       # SENTRY_DB_PASSWORD: ''

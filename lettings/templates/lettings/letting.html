@@ -1,3 +1,5 @@
+{% extends "main.html" %}
+{% block content%}
 <title>{{ title }}</title>
 <h1>{{ title }}</h1>
 <p>{{ address.number }} {{ address.street }}</p>
@@ -6,3 +8,5 @@
 <div><a href="{% url 'letting_index' %}">Back</a></div>
 <div><a href="{% url 'home' %}">Home</a></div>
 <div><a href="{% url 'profile_index' %}">Profiles</a></div>
+
+{% endblock %}

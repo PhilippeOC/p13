@@ -75,3 +75,45 @@ Utilisation de PowerShell, comme ci-dessus sauf :
 
 - Pour activer l'environnement virtuel, `.\venv\Scripts\Activate.ps1` 
 - Remplacer `which <my-command>` par `(Get-Command <my-command>).Path`
+
+
+### Déploiement
+
+#### Récapitulatif
+
+- Le déploiement du site sur Heroku se fait via CircleCI.
+- Lorsque l'application est poussée sur la branche main du registre GitHub, CircleCI lance les tests d'intégration, verifie le linter puis crée et pousse une image docker taguée sur un registre public Docker Hub.
+- Si aucune erreur n'est détectée, CircleCI déploie alors l'application sur Heroku.
+- Lorsque l'application est poussée sur une autre branche que la branche main du registre GitHub, CircleCI lance uniquement les tests et la vérification du linter.
+- La surveillance de l’application et le suivi des erreurs sont assurés par Sentry.
+
+#### Configurations
+
+- Si nécessaire, créez un compte CircleCI, Heroku, Docker Hub et Sentry.
+
+- Configuration Sentry:
+  * Créer un projet pour django puis copier la clé `dsn` générée dans le fichier `.env` situé à la racine du code source de l'application (constante : SENTRY_DSN).
+
+
+- Configuration Heroku:
+  * Créer une app avec un nom valide puis dans le menu `settings/Config Vars` ajouter les variables d'environement: 
+    - DJANGO_ALLOWED_HOSTS = nom-de-app.herokuapp.com
+    - DJANGO_DEBUG = False
+    - DJANGO_SECRET_KEY = (exemple de générateur de clé : `https://djecrety.ir/`)
+    - SENTRY_DSN = clé dsn 
+
+
+- Configuration CircleCI:
+  * Après avoir créé un registre GitHub au nom du projet, configurer CircleCI en suivant les instructions : `https://circleci.com/docs/getting-started`
+  * Dans `Project Settings` selectionner le menu `Environment Variables` puis ajouter les variables :
+    - DJANGO_ALLOWED_HOSTS = localhost
+    - DJANGO_DEBUG = True
+    - DJANGO_SECRET_KEY = voir .env
+    - DOCKERHUB_PASSWORD 
+    - DOCKERHUB_USERNAME
+    - HEROKU_API_KEY = (menu `accout settings`)
+    - HEROKU_APP_NAME
+    - SENTRY_DSN
+  * Dans le fichier `config.yml`, au niveau de `build-and-push-to-dockerhub` dans `run` modifier les lignes:
+    - `docker build -t nom_compte_docker/nom_du_depot:$TAG .`
+    - `docker push nom_compte_docker/nom_depot:$TAG`

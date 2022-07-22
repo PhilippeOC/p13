@@ -111,9 +111,21 @@ Utilisation de PowerShell, comme ci-dessus sauf :
     - DJANGO_SECRET_KEY = voir .env
     - DOCKERHUB_PASSWORD 
     - DOCKERHUB_USERNAME
-    - HEROKU_API_KEY = (menu `accout settings`)
-    - HEROKU_APP_NAME
-    - SENTRY_DSN
+    - HEROKU_API_KEY = (situé dans le menu `accout settings`)
+    - HEROKU_APP_NAME 
+    - SENTRY_DSN = clé dsn
   * Dans le fichier `config.yml`, au niveau de `build-and-push-to-dockerhub` dans `run` modifier les lignes:
-    - `docker build -t nom_compte_docker/nom_du_depot:$TAG .`
-    - `docker push nom_compte_docker/nom_depot:$TAG`
+    - `docker build -t nom_compte_docker/nom_image_docker:$TAG .`
+    - `docker push nom_compte_docker/nom_image_docker:$TAG`
+
+
+### Exécution en local de l'image docker
+
+- Créer un fichier .env qui contient les variables d'environement:
+    - DJANGO_SECRET_KEY=(exemple de générateur de clé : `https://djecrety.ir/`)
+    - DJANGO_DEBUG=True
+    - DJANGO_ALLOWED_HOSTS=127.0.0.1 localhost
+    - SENTRY_DSN=clé dsn
+
+- Dans le dossier contenant le fichier .env exécuter la commande:
+    - `docker run --env-file .env --name nom_container -d -p 8000:8000 nom_compte_docker/nom_image_docker:numero de version` 
